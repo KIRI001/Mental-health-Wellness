@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MHW Companion | Mental Wellness Sanctuary</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Accessible Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- GSAP & Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8'
+            },
+            slate: {
+              50: '#f8fafc', 500: '#64748b', 600: '#475569', 900: '#0f172a'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+            display: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden pt-24 font-sans">
+
+  <canvas id="three-canvas"></canvas>
+
+  <div id="navbar-placeholder"></div>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex flex-col justify-center relative overflow-hidden bg-slate-50">
+    <div class="max-w-6xl mx-auto px-6 w-full pt-32 pb-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div class="space-y-10 relative z-10 text-center md:text-left">
+          <div
+            class="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-blue-100">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+            </span>
+            24/7 Professional Support
+          </div>
+          <h1
+            class="font-display text-5xl md:text-7xl font-black text-slate-900 leading-[1.05] uppercase tracking-tighter">
+            Your Quiet <br> <span class="text-blue-600 italic relative inline-block">Sanctuary
+              <span class="absolute bottom-2 left-0 w-full h-3 bg-blue-100/60 -z-10 rounded-sm"></span>
+            </span>
+          </h1>
+          <p class="text-lg md:text-xl text-slate-500 max-w-xl mx-auto md:mx-0 leading-relaxed font-bold">Step away from
+            the noise. MHW
+            Companion provides the space and tools you need to find your center again.</p>
+
+          <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-6 pt-4">
+            <a href="pages/chat.html"
+              class="bg-blue-600 text-white px-10 py-5 rounded-2xl text-lg font-black shadow-3xl shadow-blue-200 hover:bg-slate-900 transition-all hover:scale-105 active:scale-95 group flex items-center justify-center gap-4">
+              AI Support <i class="ri-arrow-right-line group-hover:translate-x-2 transition-transform"></i>
+            </a>
+            <a href="#therapy"
+              class="bg-white text-slate-900 px-10 py-5 rounded-2xl text-lg font-black border border-slate-100 shadow-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-4">
+              Explore Hub
+            </a>
+          </div>
+        </div>
+
+        <div class="relative group flex justify-center md:justify-end">
+          <div
+            class="absolute -inset-10 bg-blue-200/20 blur-[100px] rounded-full group-hover:bg-blue-300/30 transition-all">
+          </div>
+          <img src="assets/images/hero_saas.png" alt="MHW Sanctuary Illustration"
+            class="relative z-10 w-full max-w-lg h-auto object-contain drop-shadow-3xl transform group-hover:scale-[1.02] transition-transform duration-700">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section id="about" class="py-32 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div class="order-2 md:order-1">
+          <img src="assets/images/about-2.png" alt="Mission Illustration"
+            class="w-full max-w-lg mx-auto h-auto drop-shadow-2xl">
+        </div>
+        <div class="space-y-10 order-1 md:order-2">
+          <h2 class="font-display text-4xl md:text-6xl font-black text-slate-900 uppercase leading-tight">A Journey to
+            <br> <span class="text-blue-500 italic">Self-Discovery</span>
+          </h2>
+          <div class="space-y-6">
+            <p class="text-xl text-slate-600 leading-relaxed font-medium">We believe mental health shouldn't be a
+              privilege. It’s a basic human rhythm that needs tending. Our "Missions" are designed to help you reconnect
+              with yourself in moments of chaos.</p>
+            <div class="grid grid-cols-2 gap-10 pt-8 border-t border-slate-50">
+              <div>
+                <h4 class="font-black text-blue-600 text-4xl mb-2 tracking-tighter">99%</h4>
+                <p class="text-[10px] uppercase font-black tracking-widest text-slate-400">Privacy Preference</p>
+              </div>
+              <div>
+                <h4 class="font-black text-blue-600 text-4xl mb-2 tracking-tighter">24/7</h4>
+                <p class="text-[10px] uppercase font-black tracking-widest text-slate-400">Response Rate</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Grounding Tool Section -->
+  <section id="grounding" class="py-32 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
+        <div class="space-y-10">
+          <div class="h-1.5 w-24 bg-blue-600 rounded-full"></div>
+          <h2
+            class="font-display text-4xl md:text-6xl font-black text-slate-900 uppercase leading-none tracking-tighter">
+            Digital <br> <span class="text-blue-600 italic relative inline-block">Grounding
+              <span class="absolute bottom-1 left-0 w-full h-2.5 bg-blue-100/60 -z-10 rounded-sm"></span>
+            </span>
+          </h2>
+          <p class="text-xl text-slate-500 leading-relaxed font-medium max-w-lg">Racing thoughts? Overwhelmed? Use our
+            rhythmic breathing tool to physically signal your nervous system to rest.</p>
+
+          <div
+            class="p-10 bg-white rounded-[3rem] shadow-3xl shadow-slate-200 border border-slate-100 flex flex-col items-center gap-10 group cursor-pointer"
+            id="breath-trigger">
+            <div
+              class="breath-circle h-48 w-48 bg-blue-50 rounded-full border-[10px] border-blue-100 flex items-center justify-center relative transition-all"
+              id="breath-circle">
+              <div class="absolute inset-0 bg-blue-600/10 rounded-full animate-ping"></div>
+              <span class="text-xl font-black text-blue-600 uppercase tracking-widest text-center leading-tight"
+                id="breath-text">Steady<br><span class="text-sm opacity-40">Click</span></span>
+            </div>
+            <button
+              class="bg-slate-900 text-white px-10 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl shadow-slate-200">Start
+              Guided Session</button>
+          </div>
+        </div>
+
+        <div class="relative flex justify-center md:justify-end">
+          <img src="assets/images/grounding.png" alt="Grounding Illustration" class="w-full max-w-lg h-auto">
+          <div
+            class="absolute -bottom-10 -right-4 md:-right-10 bg-white p-8 rounded-3xl shadow-2xl border border-slate-50 max-w-[200px] animate-float">
+            <i class="ri-pulse-line text-4xl text-blue-500 mb-4 block"></i>
+            <p class="text-xs font-bold text-slate-400 leading-relaxed uppercase tracking-widest">Active bio-feedback
+              loop engaged</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Therapy Hub (Wellness Vault) -->
+  <section id="therapy" class="py-32 bg-white relative">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-end gap-10 mb-20">
+        <div class="space-y-6">
+          <div class="h-1.5 w-24 bg-blue-600 rounded-full"></div>
+          <h2 class="font-display text-5xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter">
+            Wellness <span class="text-blue-600 italic">Vault</span>
+          </h2>
+          <p class="text-xl text-slate-500 max-w-lg font-medium">Explore our sanctuary of curated mental health tools.
+            From guided flows to rhythmic soundscapes.</p>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex bg-slate-50 p-2 rounded-[2rem] gap-2 border border-slate-100">
+          <button
+            class="vault-tab active px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"
+            data-category="all">All</button>
+          <button
+            class="vault-tab px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"
+            data-category="video">Watch</button>
+          <button
+            class="vault-tab px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"
+            data-category="audio">Listen</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="vault-grid">
+
+        <!-- Card 1: Video -->
+        <article class="vault-card bg-white rounded-[2.5rem] overflow-hidden group shadow-sm border border-slate-50"
+          data-category="video">
+          <div class="aspect-video relative overflow-hidden cursor-pointer" onclick="openVideoModal('bJJWArRfLog')">
+            <img src="https://img.youtube.com/vi/bJJWArRfLog/hqdefault.jpg"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="play-overlay absolute inset-0 flex items-center justify-center">
+              <div
+                class="h-16 w-16 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-2xl scale-0 group-hover:scale-100 transition-transform">
+                <i class="ri-play-fill text-3xl ml-1"></i>
+              </div>
+            </div>
+          </div>
+          <div class="p-10">
+            <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 mb-4 block">Guided Flow</span>
+            <h3 class="text-2xl font-black text-slate-900 mb-3 font-display uppercase">Yoga for Calm</h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-8">Reduce cortisol and find physical stillness through
+              gentle movements.</p>
+            <button onclick="openVideoModal('bJJWArRfLog')"
+              class="w-full py-5 rounded-2xl bg-slate-50 text-slate-900 font-black text-[10px] uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all">Start
+              Session</button>
+          </div>
+        </article>
+
+        <!-- Card 2: Audio -->
+        <article class="vault-card bg-white rounded-[2.5rem] overflow-hidden group shadow-sm border border-slate-50"
+          data-category="audio">
+          <div
+            class="aspect-video bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center relative">
+            <i
+              class="ri-headphone-line text-6xl text-white opacity-20 group-hover:scale-110 transition-transform duration-700"></i>
+            <div class="absolute bottom-6 left-6 wave-container">
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+            </div>
+          </div>
+          <div class="p-10">
+            <span class="text-[9px] font-black uppercase tracking-widest text-indigo-400 mb-4 block">Soundscape</span>
+            <h3 class="text-2xl font-black text-slate-900 mb-3 font-display uppercase">Ocean Breeze</h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-8">Delta waves embedded in coastal recordings for deep
+              neural rest.</p>
+            <div class="flex items-center gap-4">
+              <audio id="audio-1" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+              </audio>
+              <button onclick="toggleAudio('audio-1', this)"
+                class="h-14 w-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 hover:bg-slate-900 transition-all">
+                <i class="ri-play-fill text-2xl"></i>
+              </button>
+              <span class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-600">Pure Frequencies</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3: Video -->
+        <article class="vault-card bg-white rounded-[2.5rem] overflow-hidden group shadow-sm border border-slate-50"
+          data-category="video">
+          <div class="aspect-video relative overflow-hidden cursor-pointer" onclick="openVideoModal('inpok4MKVLM')">
+            <img src="https://img.youtube.com/vi/inpok4MKVLM/hqdefault.jpg"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="play-overlay absolute inset-0 flex items-center justify-center">
+              <div
+                class="h-16 w-16 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-2xl scale-0 group-hover:scale-100 transition-transform">
+                <i class="ri-vidicon-fill text-3xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="p-10">
+            <span class="text-[9px] font-black uppercase tracking-widest text-red-400 mb-4 block">SOS Support</span>
+            <h3 class="text-2xl font-black text-slate-900 mb-3 font-display uppercase">Grounding SOS</h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-8">A rapid 5-minute technique to pull you back from
+              racing thoughts.</p>
+            <button onclick="openVideoModal('inpok4MKVLM')"
+              class="w-full py-5 rounded-2xl bg-blue-600 text-white font-black text-[10px] uppercase tracking-widest hover:shadow-xl transition-all">Watch
+              Now</button>
+          </div>
+        </article>
+
+        <!-- Card 4: Audio -->
+        <article class="vault-card bg-white rounded-[2.5rem] overflow-hidden group shadow-sm border border-slate-50"
+          data-category="audio">
+          <div
+            class="aspect-video bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center relative">
+            <i
+              class="ri-mic-2-fill text-6xl text-white opacity-20 group-hover:scale-110 transition-transform duration-700"></i>
+            <div class="absolute bottom-6 left-6 wave-container">
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+              <span class="wave-bar"></span>
+            </div>
+          </div>
+          <div class="p-10">
+            <span class="text-[9px] font-black uppercase tracking-widest text-purple-400 mb-4 block">Ambient
+              Night</span>
+            <h3 class="text-2xl font-black text-slate-900 mb-3 font-display uppercase">Forest Night</h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-8">Nature frequencies designed to deepen sleep and
+              reduce anxiety.</p>
+            <div class="flex items-center gap-4">
+              <audio id="audio-2" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+              </audio>
+              <button onclick="toggleAudio('audio-2', this)"
+                class="h-14 w-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-95 hover:bg-slate-900 transition-all">
+                <i class="ri-play-fill text-2xl"></i>
+              </button>
+              <span class="text-[9px] font-black uppercase tracking-[0.2em] text-indigo-600">Deep Rest</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 5: Video -->
+        <article class="vault-card bg-white rounded-[2.5rem] overflow-hidden group shadow-sm border border-slate-50"
+          data-category="video">
+          <div class="aspect-video relative overflow-hidden cursor-pointer" onclick="openVideoModal('ZToicreGuHs')">
+            <img src="https://img.youtube.com/vi/ZToicreGuHs/hqdefault.jpg"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="play-overlay absolute inset-0 flex items-center justify-center">
+              <div
+                class="h-16 w-16 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-2xl scale-0 group-hover:scale-100 transition-transform">
+                <i class="ri-leaf-fill text-3xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="p-10">
+            <span class="text-[9px] font-black uppercase tracking-widest text-green-400 mb-4 block">Zen Guided</span>
+            <h3 class="text-2xl font-black text-slate-900 mb-3 font-display uppercase">Mindful Zen</h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-8">Cultivate a peaceful and resilient mind through deep
+              focus.</p>
+            <button onclick="openVideoModal('ZToicreGuHs')"
+              class="w-full py-5 rounded-2xl bg-slate-50 text-slate-900 font-black text-[10px] uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all">Enter
+              Space</button>
+          </div>
+        </article>
+
+        <!-- Card 6: Video -->
+        <article class="vault-card bg-white rounded-[2.5rem] overflow-hidden group shadow-sm border border-slate-50"
+          data-category="video">
+          <div class="aspect-video relative overflow-hidden cursor-pointer" onclick="openVideoModal('403EYp7S3yY')">
+            <img src="https://img.youtube.com/vi/403EYp7S3yY/hqdefault.jpg"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="play-overlay absolute inset-0 flex items-center justify-center">
+              <div
+                class="h-16 w-16 bg-white rounded-full flex items-center justify-center text-blue-600 shadow-2xl scale-0 group-hover:scale-100 transition-transform">
+                <i class="ri-sun-cloudy-fill text-3xl"></i>
+              </div>
+            </div>
+          </div>
+          <div class="p-10">
+            <span class="text-[9px] font-black uppercase tracking-widest text-orange-400 mb-4 block">Morning Flow</span>
+            <h3 class="text-2xl font-black text-slate-900 mb-3 font-display uppercase">Morning Ease</h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-8">Start your day with gentle movements and positive
+              affirmations.</p>
+            <button onclick="openVideoModal('403EYp7S3yY')"
+              class="w-full py-5 rounded-2xl bg-blue-600 text-white font-black text-[10px] uppercase tracking-widest hover:shadow-xl transition-all">Begin
+              Day</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Community Encouragement Section -->
+  <section class="py-32 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="bg-white rounded-[4rem] p-12 md:p-24 border border-slate-100 shadow-2xl shadow-slate-200/50">
+        <h2
+          class="font-display text-4xl md:text-6xl font-black text-slate-900 mb-12 text-center uppercase tracking-tighter leading-none">
+          Community
+          <span class="text-blue-600 italic">Spark</span>
+        </h2>
+        <div class="max-w-2xl mx-auto">
+          <form id="review-form" class="space-y-6">
+            <textarea id="review-input" rows="4"
+              class="w-full p-10 rounded-[2.5rem] bg-slate-50 border border-slate-50 outline-none focus:bg-white focus:ring-[12px] focus:ring-blue-100/50 transition-all text-xl font-medium placeholder:text-slate-300 resize-none leading-relaxed"
+              placeholder="Share a spark of positivity..." required></textarea>
+            <button type="submit"
+              class="w-full py-6 bg-blue-600 text-white font-black text-xs uppercase tracking-widest rounded-[2rem] shadow-2xl shadow-blue-200 hover:bg-slate-900 transition-all transform hover:-translate-y-1 active:scale-95">Post
+              Anonymous Note</button>
+          </form>
+        </div>
+        <div id="reviews-list" class="mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="video-modal"
+    class="fixed inset-0 bg-slate-900/98 z-[5000] hidden items-center justify-center p-6 backdrop-blur-xl">
+    <div class="w-full max-w-5xl relative aspect-video shadow-2xl rounded-3xl overflow-hidden border border-white/10">
+      <button onclick="closeVideoModal()"
+        class="absolute -top-16 right-0 text-white text-5xl hover:scale-110 transition-transform"><i
+          class="ri-close-line"></i></button>
+      <iframe id="video-frame" class="w-full h-full" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

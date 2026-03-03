@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up | MHW Companion</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-slate-50 text-slate-900 min-h-screen flex items-center justify-center p-6 font-sans">
+
+  <canvas id="three-canvas" class="opacity-10"></canvas>
+
+  <a href="../index.html"
+    class="fixed top-8 left-8 flex items-center gap-4 bg-white px-8 py-3.5 rounded-2xl shadow-2xl border border-slate-100 font-black text-slate-400 hover:text-blue-600 transition-all z-[3000] text-xs uppercase tracking-[0.2em] group">
+    <i class="ri-arrow-left-line text-xl group-hover:-translate-x-2 transition-transform"></i> Home
+  </a>
+
+  <div
+    class="auth-card w-full max-w-2xl bg-white p-12 md:p-24 rounded-[3.5rem] border border-slate-100 shadow-3xl relative z-10 shadow-slate-200/50 overflow-hidden">
+    <div class="h-2 w-48 bg-blue-100 rounded-full mx-auto mb-12"></div>
+    <div class="text-center mb-16">
+      <div
+        class="h-20 w-20 bg-blue-50 rounded-[30px] flex items-center justify-center mx-auto mb-10 text-blue-600 text-4xl shadow-xl shadow-blue-100 border border-blue-100 mb-10">
+        <i class="ri-sparkling-2-fill"></i>
+      </div>
+      <h1 class="font-display text-4xl font-black text-slate-900 mb-6 uppercase tracking-tight">Join the <span
+          class="text-blue-600 italic">Sanctuary</span></h1>
+      <p class="text-slate-400 font-medium text-lg leading-relaxed">Start your journey to mental clarity today</p>
+    </div>
+
+    <form id="signup-form" class="space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-3">
+          <label class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 ml-4">First Name</label>
+          <div class="relative group">
+            <i
+              class="ri-user-line absolute left-8 top-1/2 -translate-y-1/2 text-slate-300 text-2xl group-focus-within:text-blue-500 transition-colors"></i>
+            <input type="text" id="firstname" name="firstname" placeholder="John"
+              class="w-full bg-slate-50 border border-slate-50 py-6 pl-20 pr-10 rounded-[30px] outline-none focus:bg-white focus:ring-[12px] focus:ring-blue-100/50 transition-all font-medium text-slate-800 text-lg shadow-sm"
+              required>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <label class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 ml-4">Last Name</label>
+          <div class="relative group">
+            <i
+              class="ri-user-line absolute left-8 top-1/2 -translate-y-1/2 text-slate-300 text-2xl group-focus-within:text-blue-500 transition-colors"></i>
+            <input type="text" id="lastname" name="lastname" placeholder="Doe"
+              class="w-full bg-slate-50 border border-slate-50 py-6 pl-20 pr-10 rounded-[30px] outline-none focus:bg-white focus:ring-[12px] focus:ring-blue-100/50 transition-all font-medium text-slate-800 text-lg shadow-sm"
+              required>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <label class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 ml-4">Email Address</label>
+        <div class="relative group">
+          <i
+            class="ri-mail-line absolute left-8 top-1/2 -translate-y-1/2 text-slate-300 text-2xl group-focus-within:text-blue-500 transition-colors"></i>
+          <input type="email" id="email" name="email" placeholder="name@example.com"
+            class="w-full bg-slate-50 border border-slate-50 py-6 pl-20 pr-10 rounded-[30px] outline-none focus:bg-white focus:ring-[12px] focus:ring-blue-100/50 transition-all font-medium text-slate-800 text-lg shadow-sm"
+            required>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <label class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 ml-4">Password</label>
+        <div class="relative group">
+          <i
+            class="ri-lock-password-line absolute left-8 top-1/2 -translate-y-1/2 text-slate-300 text-2xl group-focus-within:text-blue-500 transition-colors"></i>
+          <input type="password" id="password" name="password" placeholder="Min. 8 characters"
+            class="w-full bg-slate-50 border border-slate-50 py-6 pl-20 pr-10 rounded-[30px] outline-none focus:bg-white focus:ring-[12px] focus:ring-blue-100/50 transition-all font-medium text-slate-800 text-lg shadow-sm"
+            required>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <label class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 ml-4">Confirm Password</label>
+        <div class="relative group">
+          <i
+            class="ri-lock-line absolute left-8 top-1/2 -translate-y-1/2 text-slate-300 text-2xl group-focus-within:text-blue-500 transition-colors"></i>
+          <input type="password" id="confirm_password" name="confirm_password" placeholder="••••••••"
+            class="w-full bg-slate-50 border border-slate-50 py-6 pl-20 pr-10 rounded-[30px] outline-none focus:bg-white focus:ring-[12px] focus:ring-blue-100/50 transition-all font-medium text-slate-800 text-lg shadow-sm"
+            required>
+        </div>
+      </div>
+
+      <button type="submit" id="submit-btn"
+        class="w-full bg-blue-600 text-white py-6 rounded-[30px] text-xl font-black shadow-2xl shadow-blue-200 hover:bg-slate-900 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-4 group">
+        Create Account <i class="ri-arrow-right-line group-hover:translate-x-2 transition-transform"></i>
+      </button>
+    </form>
+
+    <div class="mt-16 text-center">
+      <p class="text-slate-400 font-bold tracking-tight">Already part of the community? <a href="login.html"
+          class="text-blue-600 font-black hover:underline underline-offset-8 italic">Sign In</a></p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : '';
+    const signupForm = document.getElementById('signup-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const firstname = document.getElementById('firstname').value;
+      const lastname = document.getElementById('lastname').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirm_password = document.getElementById('confirm_password').value;
+
+      if (password !== confirm_password) {
+        alert('Passwords do not match');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Connecting...';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/signup`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: `${firstname} ${lastname}`, email, password })
+        });
+
+        const data = await res.json();
+        if (data.status === 'success') {
+          window.location.href = 'login.html';
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Connection Error: Server unreachable.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Create Account <i class="ri-arrow-right-line"></i>';
+      }
+    });
+
+    gsap.from('.auth-card', { opacity: 0, scale: 0.95, duration: 1.5, ease: "power4.out" });
+  </script>
+</body>
+
+</html>

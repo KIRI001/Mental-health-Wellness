@@ -1,0 +1,146 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+#main-content {
+    margin-left: 20%;
+    width: 80%;
+    padding: 40px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 50%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#anonymous-review-input {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    box-sizing: border-box;
+    font-size: 1em;
+    resize: none;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#reviews {
+    margin: 20px 0;
+}
+
+.review {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s;
+}
+
+.review:hover {
+    transform: translateY(-5px);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #6c757d;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.2em;
+}
+
+.review-content {
+    font-size: 1em;
+    color: #212529;
+}
+
+.review-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 1em;
+}
+
+.like, .share {
+    cursor: pointer;
+    color: #6c757d;
+    transition: color 0.3s;
+}
+
+.like:hover, .share:hover {
+    color: #007bff;
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.fade-in.show {
+    opacity: 1;
+}
