@@ -46,7 +46,7 @@ function displayWeather(data) {
 
     const iconImage = document.createElement("img");
     iconImage.src = iconUrl;
-    iconImage.alt = capitalizeFirst(weather[0].description) || "Current weather conditions";
+    iconImage.alt = capitalizeFirst(weather[0].description) || `${weather[0].main || "Current"} weather conditions`;
     iconImage.width = 80;
     iconImage.height = 80;
 
