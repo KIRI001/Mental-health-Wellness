@@ -19,7 +19,7 @@ function searchWeather() {
     }
 
     if (!apiKey) {
-        showError("Set window.OPENWEATHER_API_KEY before searching weather");
+        showError("API key not configured. Please set window.OPENWEATHER_API_KEY in the console.");
         return;
     }
 
@@ -38,16 +38,33 @@ function displayWeather(data) {
     const { name, main, weather, wind } = data;
     const icon = weather[0].icon;
     const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+    weatherInfo.replaceChildren();
 
-    weatherInfo.innerHTML = `
-        <h2>${name}</h2>
-        <img src="${iconUrl}" alt="Weather icon" width="80" height="80">
-        <p><strong>Temperature:</strong> ${main.temp}°C</p>
-        <p><strong>Feels Like:</strong> ${main.feels_like}°C</p>
-        <p><strong>Weather:</strong> ${weather[0].main}</p>
-        <p><strong>Humidity:</strong> ${main.humidity}%</p>
-        <p><strong>Wind Speed:</strong> ${wind.speed} m/s</p>
-    `;
+    const title = document.createElement("h2");
+    title.textContent = name;
+
+    const iconImage = document.createElement("img");
+    iconImage.src = iconUrl;
+    iconImage.alt = weather[0].description || weather[0].main || "Weather conditions";
+    iconImage.width = 80;
+    iconImage.height = 80;
+
+    const details = [
+        ["Temperature", `${main.temp}°C`],
+        ["Feels Like", `${main.feels_like}°C`],
+        ["Weather", weather[0].main],
+        ["Humidity", `${main.humidity}%`],
+        ["Wind Speed", `${wind.speed} m/s`]
+    ];
+
+    weatherInfo.append(title, iconImage);
+    details.forEach(([label, value]) => {
+        const row = document.createElement("p");
+        const strong = document.createElement("strong");
+        strong.textContent = `${label}: `;
+        row.append(strong, document.createTextNode(value));
+        weatherInfo.appendChild(row);
+    });
 
     weatherResult.classList.add("show");
     errorDiv.classList.remove("show");
