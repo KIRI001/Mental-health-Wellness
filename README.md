@@ -1,4 +1,4 @@
-# MHW- repository
+# MHW Repository
 
 ## Weather App (CSS path/casing fix)
 

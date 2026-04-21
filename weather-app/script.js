@@ -4,6 +4,7 @@ const cityInput = document.getElementById("cityInput");
 const weatherResult = document.getElementById("weatherResult");
 const weatherInfo = document.getElementById("weatherInfo");
 const errorDiv = document.getElementById("error");
+const toSentenceCase = (text) => text ? text.charAt(0).toUpperCase() + text.slice(1) : "";
 
 searchBtn.addEventListener("click", searchWeather);
 cityInput.addEventListener("keypress", (e) => {
@@ -45,7 +46,7 @@ function displayWeather(data) {
 
     const iconImage = document.createElement("img");
     iconImage.src = iconUrl;
-    iconImage.alt = weather[0].description || weather[0].main || "Weather conditions";
+    iconImage.alt = toSentenceCase(weather[0].description) || "Current weather conditions";
     iconImage.width = 80;
     iconImage.height = 80;
 
