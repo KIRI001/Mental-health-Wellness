@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | MHW Companion</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Accessible Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- GSAP & Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <link rel="stylesheet" href="../css/style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+            display: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans pt-24">
+
+  <canvas id="three-canvas" class="opacity-10"></canvas>
+
+  <div id="navbar-placeholder"></div>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="fixed top-28 right-8 z-[6000] flex flex-col gap-4 max-w-sm w-full"></div>
+
+  <main class="flex-1 max-w-6xl w-full mx-auto px-6 pt-16 pb-20 relative z-10">
+    <!-- Header -->
+    <header class="mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div>
+        <h1 class="font-display text-4xl md:text-5xl font-black text-slate-900 uppercase tracking-tight">Your <span class="text-blue-600 italic">Sanctuary</span></h1>
+        <p class="text-slate-500 font-medium mt-2">Manage your wellness, reminders, and write your private thoughts securely.</p>
+      </div>
+      <!-- Tab Controls -->
+      <div class="flex bg-white p-2 rounded-[2rem] border border-slate-100 shadow-sm self-start md:self-auto">
+        <button id="tab-journal" class="tab-btn active px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all bg-blue-600 text-white" onclick="switchTab('journal')">
+          <i class="ri-book-open-line mr-2"></i>Journal
+        </button>
+        <button id="tab-reminders" class="tab-btn px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-slate-400 hover:text-blue-600" onclick="switchTab('reminders')">
+          <i class="ri-medicine-bottle-line mr-2"></i>Reminders
+        </button>
+      </div>
+    </header>
+
+    <!-- Tab Contents -->
+    <div id="journal-view" class="tab-view block">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 items-start">
+        
+        <!-- Timeline of Journal Entries -->
+        <section class="space-y-8">
+          <h3 class="font-display text-2xl font-black text-slate-900 uppercase tracking-tight mb-6">Reflection History</h3>
+          <div id="journal-list" class="space-y-6">
+            <!-- Populated via API -->
+            <div class="bg-white p-12 rounded-[2.5rem] border border-slate-100 text-center text-slate-400 py-20">
+              <i class="ri-book-mark-line text-5xl mb-4 block text-slate-300"></i>
+              <p class="font-bold">No reflections recorded yet. Use the form to write your first entry.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- New Journal Form -->
+        <aside class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl relative overflow-hidden">
+          <div class="h-1.5 w-full bg-blue-600 absolute top-0 left-0"></div>
+          <h3 class="font-display text-2xl font-black text-slate-900 uppercase tracking-tight mb-8">Write Reflection</h3>
+          
+          <form id="journal-form" class="space-y-6">
+            <div class="space-y-2">
+              <label class="text-[9px] font-black uppercase tracking-widest text-slate-400 ml-2">Reflection Title</label>
+              <input type="text" id="journal-title" placeholder="How was your day?" class="w-full bg-slate-50 border border-slate-50 p-5 rounded-2xl outline-none focus:bg-white focus:ring-[8px] focus:ring-blue-100/50 transition-all font-semibold text-slate-800" required>
+            </div>
+            
+            <div class="space-y-2">
+              <label class="text-[9px] font-black uppercase tracking-widest text-slate-400 ml-2">Private Thoughts</label>
+              <textarea id="journal-content" rows="6" placeholder="Write freely. Your entries are cryptographically pseudonymized and completely private." class="w-full bg-slate-50 border border-slate-50 p-6 rounded-2xl outline-none focus:bg-white focus:ring-[8px] focus:ring-blue-100/50 transition-all font-medium text-slate-700 resize-none leading-relaxed" required></textarea>
+            </div>
+
+            <button type="submit" id="journal-submit" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-200 hover:bg-slate-900 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+              Save Entry <i class="ri-save-line text-sm"></i>
+            </button>
+          </form>
+        </aside>
+      </div>
+    </div>
+
+    <div id="reminders-view" class="tab-view hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-12 items-start">
+        
+        <!-- Reminders List -->
+        <section class="space-y-8">
+          <h3 class="font-display text-2xl font-black text-slate-900 uppercase tracking-tight mb-6">Schedule list</h3>
+          <div id="reminders-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Populated via API -->
+            <div class="col-span-full bg-white p-12 rounded-[2.5rem] border border-slate-100 text-center text-slate-400 py-20">
+              <i class="ri-medicine-bottle-line text-5xl mb-4 block text-slate-300"></i>
+              <p class="font-bold">No reminders set yet. Setup a notification to keep track of your schedule.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- New Reminder Form -->
+        <aside class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-2xl relative overflow-hidden">
+          <div class="h-1.5 w-full bg-blue-600 absolute top-0 left-0"></div>
+          <h3 class="font-display text-2xl font-black text-slate-900 uppercase tracking-tight mb-8">Add Reminder</h3>
+          
+          <form id="reminder-form" class="space-y-6">
+            <div class="space-y-2">
+              <label class="text-[9px] font-black uppercase tracking-widest text-slate-400 ml-2">Medicine Name</label>
+              <input type="text" id="med-name" placeholder="Aspirin, Vitamin D, etc." class="w-full bg-slate-50 border border-slate-50 p-5 rounded-2xl outline-none focus:bg-white focus:ring-[8px] focus:ring-blue-100/50 transition-all font-semibold text-slate-800" required>
+            </div>
+            
+            <div class="space-y-2">
+              <label class="text-[9px] font-black uppercase tracking-widest text-slate-400 ml-2">Dosage Description</label>
+              <input type="text" id="med-dosage" placeholder="1 tablet, 5ml, etc." class="w-full bg-slate-50 border border-slate-50 p-5 rounded-2xl outline-none focus:bg-white focus:ring-[8px] focus:ring-blue-100/50 transition-all font-semibold text-slate-800" required>
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-[9px] font-black uppercase tracking-widest text-slate-400 ml-2">Alert Time</label>
+              <input type="time" id="med-time" class="w-full bg-slate-50 border border-slate-50 p-5 rounded-2xl outline-none focus:bg-white focus:ring-[8px] focus:ring-blue-100/50 transition-all font-semibold text-slate-800" required>
+            </div>
+
+            <button type="submit" id="reminder-submit" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-200 hover:bg-slate-900 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+              Add Schedule <i class="ri-add-line text-sm"></i>
+            </button>
+          </form>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="../js/components.js"></script>
+  <script src="../js/main.js"></script>
+
+  <script>
+    // Security redirect check
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:') ? 'http://localhost:3000' : '';
+
+    // Switch between journal and reminders tabs
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white');
+        btn.classList.add('text-slate-400', 'hover:text-blue-600');
+      });
+      document.querySelectorAll('.tab-view').forEach(view => {
+        view.classList.remove('block');
+        view.classList.add('hidden');
+      });
+
+      if (tab === 'journal') {
+        document.getElementById('tab-journal').classList.add('bg-blue-600', 'text-white');
+        document.getElementById('tab-journal').classList.remove('text-slate-400', 'hover:text-blue-600');
+        document.getElementById('journal-view').classList.add('block');
+        document.getElementById('journal-view').classList.remove('hidden');
+      } else {
+        document.getElementById('tab-reminders').classList.add('bg-blue-600', 'text-white');
+        document.getElementById('tab-reminders').classList.remove('text-slate-400', 'hover:text-blue-600');
+        document.getElementById('reminders-view').classList.add('block');
+        document.getElementById('reminders-view').classList.remove('hidden');
+      }
+      setTimeout(() => ScrollTrigger.refresh(), 300);
+    }
+
+    // Load journals list
+    async function loadJournals() {
+      try {
+        const res = await fetch(`${API_BASE}/api/journals`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const listDiv = document.getElementById('journal-list');
+        listDiv.innerHTML = '';
+        
+        if (!data.journals || !data.journals.length) {
+          listDiv.innerHTML = `
+            <div class="bg-white p-12 rounded-[2.5rem] border border-slate-100 text-center text-slate-400 py-20 shadow-sm">
+              <i class="ri-book-mark-line text-5xl mb-4 block text-slate-300"></i>
+              <p class="font-bold">No reflections recorded yet. Use the form to write your first entry.</p>
+            </div>
+          `;
+          return;
+        }
+
+        data.journals.forEach(entry => {
+          const div = document.createElement('div');
+          div.className = 'bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-md relative group hover:shadow-lg transition-all duration-300';
+          div.innerHTML = `
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <span class="text-[9px] font-black uppercase tracking-widest text-blue-500 mb-2 block">${new Date(entry.created_at).toLocaleDateString()} &bull; ${new Date(entry.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                <h4 class="font-display font-black text-xl text-slate-900 uppercase">${entry.title}</h4>
+              </div>
+              <div class="text-[8px] font-bold text-slate-300 bg-slate-50 px-3 py-1.5 rounded-full uppercase tracking-wider">Pseudonymized</div>
+            </div>
+            <p class="text-slate-600 text-sm leading-relaxed whitespace-pre-line font-medium">${entry.content}</p>
+          `;
+          listDiv.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Error fetching journals:', err);
+      }
+    }
+
+    // Submit journal entry
+    document.getElementById('journal-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const title = document.getElementById('journal-title').value;
+      const content = document.getElementById('journal-content').value;
+      const submitBtn = document.getElementById('journal-submit');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Saving...';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/journals`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ title, content })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          document.getElementById('journal-title').value = '';
+          document.getElementById('journal-content').value = '';
+          loadJournals();
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Save Entry <i class="ri-save-line text-sm"></i>';
+      }
+    });
+
+    // Load reminders list
+    async function loadReminders() {
+      try {
+        const res = await fetch(`${API_BASE}/api/reminders`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const listDiv = document.getElementById('reminders-list');
+        listDiv.innerHTML = '';
+        
+        if (!data.reminders || !data.reminders.length) {
+          listDiv.innerHTML = `
+            <div class="col-span-full bg-white p-12 rounded-[2.5rem] border border-slate-100 text-center text-slate-400 py-20 shadow-sm">
+              <i class="ri-medicine-bottle-line text-5xl mb-4 block text-slate-300"></i>
+              <p class="font-bold">No reminders set yet. Setup a notification to keep track of your schedule.</p>
+            </div>
+          `;
+          return;
+        }
+
+        data.reminders.forEach(reminder => {
+          const div = document.createElement('div');
+          div.className = 'bg-white p-8 rounded-[2rem] border border-slate-100 shadow-md flex justify-between items-center relative group hover:shadow-lg transition-all duration-300';
+          div.innerHTML = `
+            <div class="flex items-center gap-6">
+              <div class="h-14 w-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm border border-blue-100">
+                <i class="ri-medicine-bottle-fill"></i>
+              </div>
+              <div>
+                <h4 class="font-display font-black text-lg text-slate-900 uppercase">${reminder.medicineName}</h4>
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">${reminder.dosage} &bull; ${reminder.time}</p>
+              </div>
+            </div>
+            <button onclick="deleteReminder('${reminder._id}')" class="h-10 w-10 rounded-full flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all">
+              <i class="ri-delete-bin-line text-lg"></i>
+            </button>
+          `;
+          listDiv.appendChild(div);
+        });
+      } catch (err) {
+        console.error('Error fetching reminders:', err);
+      }
+    }
+
+    // Submit reminder
+    document.getElementById('reminder-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const medicineName = document.getElementById('med-name').value;
+      const dosage = document.getElementById('med-dosage').value;
+      const timeVal = document.getElementById('med-time').value;
+      const submitBtn = document.getElementById('reminder-submit');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Saving...';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/reminders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ medicineName, dosage, time: timeVal })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          document.getElementById('med-name').value = '';
+          document.getElementById('med-dosage').value = '';
+          document.getElementById('med-time').value = '';
+          loadReminders();
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Add Schedule <i class="ri-add-line text-sm"></i>';
+      }
+    });
+
+    // Delete reminder
+    async function deleteReminder(id) {
+      if (!confirm('Are you sure you want to delete this reminder?')) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/reminders/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          loadReminders();
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Show toast alerts
+    // Make sure to add the ScrollTrigger CDN to components if needed, we already did it in the head.
+    function showToast(id, title, message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.id = `toast-${id}`;
+      toast.className = 'bg-slate-900 text-white p-6 rounded-2xl shadow-3xl border border-slate-800 flex items-start gap-4 transform translate-x-full opacity-0';
+      toast.innerHTML = `
+        <div class="h-10 w-10 bg-blue-600/20 text-blue-500 rounded-xl flex items-center justify-center text-xl border border-blue-500/20 shrink-0">
+          <i class="ri-notification-3-line"></i>
+        </div>
+        <div class="flex-1">
+          <h5 class="font-bold text-sm text-slate-100 uppercase tracking-tight">${title}</h5>
+          <p class="text-slate-400 text-xs mt-1 leading-relaxed">${message}</p>
+          <button onclick="dismissNotification('${id}')" class="mt-3 text-[9px] font-black uppercase tracking-wider text-blue-400 hover:text-white transition-colors font-bold">Mark Read</button>
+        </div>
+      `;
+      container.appendChild(toast);
+      
+      // Animate entry
+      gsap.to(toast, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" });
+    }
+
+    // Dismiss notification
+    async function dismissNotification(id) {
+      try {
+        const res = await fetch(`${API_BASE}/api/notifications/${id}/read`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          const toast = document.getElementById(`toast-${id}`);
+          if (toast) {
+            // Animate exit
+            gsap.to(toast, {
+              x: 100,
+              opacity: 0,
+              duration: 0.4,
+              onComplete: () => toast.remove()
+            });
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Fetch and check notifications
+    async function checkNotifications() {
+      try {
+        const res = await fetch(`${API_BASE}/api/notifications`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.status === 'success' && data.notifications) {
+          data.notifications.forEach(notif => {
+            // Don't show toast if it already exists on screen
+            if (!document.getElementById(`toast-${notif._id}`)) {
+              showToast(notif._id, notif.title, notif.message);
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Error fetching notifications:', err);
+      }
+    }
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      loadJournals();
+      loadReminders();
+      
+      // Start polling notifications every 10 seconds
+      checkNotifications();
+      setInterval(checkNotifications, 10000);
+    });
+  </script>
+</body>
+
+</html>

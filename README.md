@@ -53,6 +53,20 @@ The platform combines a modern SaaS-inspired design with interactive features to
 
 ---
 
+### 💊 Medicine Reminder
+
+- Create reminder schedules for medicines with custom dosage and times
+- Scheduled in-app toast notifications triggered when a reminder is due via a background runner
+
+---
+
+### 📘 Private Journaling
+
+- Write anonymous personal reflections securely
+- Entries are pseudonymized using SHA-256 hashes to guarantee user privacy
+
+---
+
 ### 🎨 Modern UI
 
 - Responsive Design
@@ -75,6 +89,10 @@ The platform combines a modern SaaS-inspired design with interactive features to
 
 - Node.js
 - Express.js
+- MongoDB & Mongoose
+- JSON Web Tokens (JWT) for authentication
+- Bcrypt for password hashing
+- Node-cron for background scheduling
 
 ## Tools
 
@@ -144,9 +162,7 @@ http://localhost:3000
 
 - 🤖 AI Mental Health Chatbot
 - 🔐 Google Authentication
-- 📘 Personal Journal
 - 😊 Mood Tracking
-- 💊 Medicine Reminder
 - 🎥 Video Consultation
 - 📊 Mood Analytics
 - 🌙 Dark Mode

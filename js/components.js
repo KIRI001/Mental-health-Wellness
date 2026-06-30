@@ -11,11 +11,20 @@ const components = {
         const wallPath = isInsidePages ? 'anonyoms.html' : 'pages/anonyoms.html';
         const loginPath = isInsidePages ? 'login.html' : 'pages/login.html';
         const signupPath = isInsidePages ? 'signup.html' : 'pages/signup.html';
+        const dashboardPath = isInsidePages ? 'dashboard.html' : 'pages/dashboard.html';
         const userId = localStorage.getItem('user_id');
 
         let authContent = `
             <a href="${loginPath}" class="hidden sm:block text-sm font-bold text-slate-400 hover:text-blue-600 transition-all uppercase tracking-widest">Log In</a>
             <a href="${signupPath}" class="bg-blue-600 text-white px-8 py-3 rounded-2xl text-xs font-black shadow-xl shadow-blue-200 hover:bg-slate-900 transition-all transform hover:-translate-y-0.5 uppercase tracking-widest">Join Free</a>
+        `;
+
+        let linksContent = `
+            <a href="${homePath}" class="hover:text-blue-600 transition-colors">Home</a>
+            <a href="${homePath}#about" class="hover:text-blue-600 transition-colors">Story</a>
+            <a href="${homePath}#therapy" class="hover:text-blue-600 transition-colors">Hub</a>
+            <a href="${chatPath}" class="hover:text-blue-600 transition-colors">Support</a>
+            <a href="${wallPath}" class="hover:text-blue-600 transition-colors">Wall</a>
         `;
 
         if (userId) {
@@ -24,6 +33,12 @@ const components = {
                     <div class="h-10 w-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center border border-blue-100 italic font-black">W</div>
                     <button id="logout-trigger" class="text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-red-500 transition-colors">Logout</button>
                 </div>
+            `;
+            linksContent = `
+                <a href="${homePath}" class="hover:text-blue-600 transition-colors">Home</a>
+                <a href="${dashboardPath}" class="hover:text-blue-600 transition-colors">Dashboard</a>
+                <a href="${chatPath}" class="hover:text-blue-600 transition-colors">Support</a>
+                <a href="${wallPath}" class="hover:text-blue-600 transition-colors">Wall</a>
             `;
         }
 
@@ -38,11 +53,7 @@ const components = {
                 </div>
                 
                 <div class="hidden md:flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">
-                    <a href="${homePath}" class="hover:text-blue-600 transition-colors">Home</a>
-                    <a href="${homePath}#about" class="hover:text-blue-600 transition-colors">Story</a>
-                    <a href="${homePath}#therapy" class="hover:text-blue-600 transition-colors">Hub</a>
-                    <a href="${chatPath}" class="hover:text-blue-600 transition-colors">Support</a>
-                    <a href="${wallPath}" class="hover:text-blue-600 transition-colors">Wall</a>
+                    ${linksContent}
                 </div>
 
                 <div class="flex items-center gap-6" id="auth-nav">
@@ -91,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (logoutTrigger) {
             logoutTrigger.addEventListener('click', () => {
                 localStorage.removeItem('user_id');
+                localStorage.removeItem('token');
                 window.location.reload();
             });
         }
