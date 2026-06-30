@@ -140,18 +140,6 @@ http://localhost:3000
 
 ---
 
-# 📸 Screenshots
-
-> Add screenshots of:
-
-- 🏠 Home Page
-- 💬 Chat Page
-- 🌍 Community Wall
-- 👤 Profile
-- 📱 Mobile View
-
----
-
 # 🌟 Future Enhancements
 
 - 🤖 AI Mental Health Chatbot
